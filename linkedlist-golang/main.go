@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+)
 
 
 type Node struct{
@@ -11,6 +14,36 @@ type Node struct{
 
 type LinkedList struct{
 	head *Node
+}
+
+
+func ( ll *LinkedList ) insertBetween ( data int , valueInLL int ) error {
+
+	newNode := &Node{ data: data , nextNode: nil }
+	node := ll.head
+
+	if ll.head == nil {
+		ll.insertAtHead( data )
+		return nil
+	}
+
+	for node != nil {
+		if node.data == valueInLL {
+			newNode.nextNode = node.nextNode
+			node.nextNode = newNode
+			return nil
+		}
+
+		node = node.nextNode
+	}
+
+	return fmt.Errorf("value does not exist in  LinkedList")
+
+}
+
+
+func ( ll *LinkedList ) clear (){
+	ll.head = nil
 }
 
 
@@ -67,11 +100,29 @@ func main() {
 	node1 := Node{ 1 , &node2  }
 
 	ll := LinkedList{head: &node1}
+	// ll := LinkedList{}
 	
 	ll.insertAtHead(46)
+	ll.insertAtHead(6)
 	ll.insertAtHead(40)
 	ll.insertAtHead(99)
 	ll.insertFromTail(69420)
+	ll.insertBetween(34 , 8 )
+
+	err := ll.insertBetween(34 , 46)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	fmt.Println("")
 	ll.print()
+	
+	fmt.Println("")
+	fmt.Println("below ")
+	ll.clear()
+	fmt.Println("printing below -> ")
+	ll.print()
+	fmt.Println("----")
+
 }
